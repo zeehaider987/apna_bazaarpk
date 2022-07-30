@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:io';
 import 'package:url_launcher/url_launcher.dart';
+
 void main() {
   // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -48,7 +49,8 @@ class _HomeWebViewState extends State<HomeWebView> {
  
   @override
   Widget build(BuildContext context){
-    return MaterialApp(
+    return 
+    MaterialApp(
       title:"Apna Bazaar",
       color:Color.fromARGB(255, 34, 181, 115),
       
@@ -71,27 +73,50 @@ class _HomeWebViewState extends State<HomeWebView> {
        javascriptMode: JavascriptMode.unrestricted,
        gestureNavigationEnabled: true,
        
-       navigationDelegate: (NavigationRequest request)async {
+       navigationDelegate: (NavigationRequest request)async{
           print(request.url);
-          if (request.url.contains("mailto:")) {
-            if (!await launchUrl(Uri.parse(request.url)) ){
-              throw 'Could not launch ${Uri.parse(request.url)}' ;
-              }
+          if (request.url.contains("mailto:")) {            
+            await launchUrl(Uri.parse(request.url));        
             return NavigationDecision.prevent;
-          } else {
+          } else if(request.url.contains("telto:")) { 
+            await launchUrl(Uri.parse(request.url));
+            return NavigationDecision.prevent;
+          }
+          // else if(request.url.contains("whatsapp")){
+          //   print("start.....");
+          //   await launchUrl(Uri.parse(request.url),webViewConfiguration: WebViewConfiguration(enableJavaScript: true)); 
+          //   //https://api.whatsapp.com/send/?phone=03330362333&text&type=phone_number&app_absent=0
+          //   print("done....");
+          //   return NavigationDecision.prevent;
+          // }else if(request.url.contains("fb:")){
+          //    // fb://page/PAGEID
+          //    //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/MY_PAGE_ID"));
+          //   //String pageID = request.url.split("");
+            // https://www.facebook.com/sharer.php?u=https://apnabazaar.pk/product/meat-bags-eid-ul-adha-bakra-eid-shoppers/
+          //   await launchUrl(Uri.parse(request.url)); 
+          //   return NavigationDecision.prevent;
+          // }else if(request.url.contains("twitter")){
+            //https://twitter.com/share?url=https://apnabazaar.pk/product/meat-bags-eid-ul-adha-bakra-eid-shoppers/
+          //   await launchUrl(Uri.parse(request.url)); 
+          //   return NavigationDecision.prevent;
+          // }else if(request.url.contains("linkedin")){
+          //   await launchUrl(Uri.parse(request.url)); 
+          //https://www.linkedin.com/shareArticle?mini=true&url=https://apnabazaar.pk/product/meat-bags-eid-ul-adha-bakra-eid-shoppers/&title=Meat%20Bags%20Eid%20Ul%20Adha%20Bakra%20Eid%20Shoppers
+          //   return NavigationDecision.prevent;
+          // }else if(request.url.contains("instagram")){
+            //https://www.instagram.com/apnabazaarpk/?fbclid=IwAR3bMB7Xlm54OUTMnIfVcjjzoQDHTMHdirLAHFlvFTAVcb38-1Ye-wx25WU
+          //   await launchUrl(Uri.parse(request.url)); 
+          //   return NavigationDecision.prevent;
+          // }
+          else{
             return NavigationDecision.navigate;
           }
         }
-        
-       
-
       ),
      ),
-
       )
      );
-  }
-  
+    }
    Future<bool> _onBack() async {
     bool goBack;
     var value = await _controll.canGoBack();  // check webview can go back
