@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:io';
 import 'package:url_launcher/url_launcher.dart';
-
 void main() {
   // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -76,7 +75,7 @@ class _HomeWebViewState extends State<HomeWebView> {
        navigationDelegate: (NavigationRequest request)async{
           print(request.url);
           if (request.url.contains("mailto:")) {            
-            await launchUrl(Uri.parse(request.url));        
+            await launchUrl(Uri.parse(request.url,03,33));        
             return NavigationDecision.prevent;
           } else if(request.url.contains("telto:")) { 
             await launchUrl(Uri.parse(request.url));
@@ -84,11 +83,17 @@ class _HomeWebViewState extends State<HomeWebView> {
           }
           // else if(request.url.contains("whatsapp")){
           //   print("start.....");
-          //   await launchUrl(Uri.parse(request.url),webViewConfiguration: WebViewConfiguration(enableJavaScript: true)); 
-          //   //https://api.whatsapp.com/send/?phone=03330362333&text&type=phone_number&app_absent=0
+          //   await launchUrl(Uri.parse(request.url),webViewConfiguration: WebViewConfiguration(enableJavaScript: true));
+            
+          //   if(request.url.contains("whatsapp:")){
+          //   await launchUrl(Uri.parse(request.url));
+          //     print("done...."); 
+          //     return NavigationDecision.prevent;
+          //   }//https://api.whatsapp.com/send/?phone=03330362333&text&type=phone_number&app_absent=0
           //   print("done....");
           //   return NavigationDecision.prevent;
-          // }else if(request.url.contains("fb:")){
+          // }
+          //else if(request.url.contains("fb:")){
           //    // fb://page/PAGEID
           //    //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/MY_PAGE_ID"));
           //   //String pageID = request.url.split("");
@@ -154,7 +159,6 @@ class _HomeWebViewState extends State<HomeWebView> {
        }
        )
       );
-
       //Navigator.pop(_globalKey.currentState!.context);
    print("_notifier.isBack ${_notifier.isBack}");
       return _notifier.isBack;
